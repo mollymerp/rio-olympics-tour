@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <meta charset=utf-8 />
+  <title>Rio | Mapbox</title>
+  <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+  <!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.js'></script> -->
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.css' rel='stylesheet' />
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  #map, #splash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  #splash {
+    background-color: white;
+    opacity: .6;
+  }
+
+
+  </style>
+</head>
+
+<body>
+<div id="map"></div>
+<!-- <div id="splash">
+  <img src="brazil.svg" height='600px'>
+
+</div>  -->
+<div class = "button quiet disabled" id="back">
+  <a href="#" class="icon big caret-left" ></a>
+</div>
+<div class="button quiet"  id="forward">
+  <a href="#" class="icon big caret-right"></a>
+</div>
+  <script src='bundle.js'></script>
+</body>
+
+</html>

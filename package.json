@@ -1,0 +1,28 @@
+{
+  "name": "dg-rio-olympics",
+  "version": "1.0.0",
+  "description": "visualizing the venues of the 2016 Rio Olympics",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint --no-eslintrc -c .eslintrc index.js",
+    "start": "budo index.js --serve=bundle.js --live -d",
+    "build": "browserify index.js | uglifyjs -c -m > bundle.js"
+  },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
+  "author": "Molly Lloyd | Mapbox",
+  "license": "ISC",
+  "devDependencies": {
+    "brfs": "^1.4.1",
+    "browserify": "^12.0.1",
+    "budo": "^7.0.1",
+    "eslint": "^1.10.3",
+    "uglify-js": "^2.6.1"
+  },
+  "dependencies": {
+    "mapbox-gl": "^0.16.0"
+  }
+}
