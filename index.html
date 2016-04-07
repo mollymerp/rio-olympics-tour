@@ -26,6 +26,24 @@
     opacity: .6;
   }
 
+  .button > a {
+    color: white;
+  }
+
+  #forward, #back {
+    position: absolute;
+    top: 50%;
+    opacity: .5;
+  }
+
+  #forward {
+    right: 0;
+  }
+
+  #back {
+    left: 0;
+  }
+
 
   </style>
 </head>
@@ -36,10 +54,10 @@
   <img src="brazil.svg" height='600px'>
 
 </div>  -->
-<div class = "button quiet disabled" id="back">
+<div class = "button fill-mustard disabled" id="back">
   <a href="#" class="icon big caret-left" ></a>
 </div>
-<div class="button quiet"  id="forward">
+<div class="button fill-mustard"  id="forward">
   <a href="#" class="icon big caret-right"></a>
 </div>
   <script src='bundle.js'></script>
