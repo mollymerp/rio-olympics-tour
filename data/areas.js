@@ -20,6 +20,7 @@ module.exports = {
     },
     "properties": {
       "id": "olympic-park-2",
+      "area-name": "Olympic Park - Barra",
       "zoom": 17,
       "bearing": -20,
       "pitch": 10,
@@ -34,6 +35,7 @@ module.exports = {
     "properties": {
       "id": "olympic-park",
       "zoom": 15.5,
+      "area-name": "Olympic Park - Barra",
       "bearing": 0,
       "pitch": 40,
       "sites": [
@@ -56,6 +58,7 @@ module.exports = {
       "id": "deodoro",
       "zoom": 17,
       "bearing": -25,
+      "area-name": "Olympic Park - Deodoro",
       "pitch": 30,
       "sites": [
         "Youth Arena",
@@ -73,6 +76,7 @@ module.exports = {
     "properties": {
       "id": "x-park",
       "zoom": 16,
+      "area-name": "X-Park - Deodoro",
       "bearing": 0,
       "pitch": 0,
       "sites": [
@@ -89,6 +93,7 @@ module.exports = {
       "id": "maracana",
       "zoom": 17,
       "bearing": 120,
+      "area-name": "Maracanã",
       "pitch": 0,
       "sites": [
         "Maracanã Stadium",
@@ -106,6 +111,7 @@ module.exports = {
       "id": "rowing",
       "zoom": 14,
       "bearing": 75,
+      "area-name": "Lagoa",
       "pitch": 40,
       "sites": [
         "Lagoa Stadium"
@@ -121,6 +127,7 @@ module.exports = {
       "id": "copacabana",
       "zoom": 14.5,
       "bearing": -40,
+      "area-name": "Copacabana",
       "pitch": 50,
       "sites": [
         "Copacabana Stadium",
