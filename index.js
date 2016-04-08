@@ -23,7 +23,7 @@ var map = new mapboxgl.Map({
 });
 var forward_button = document.getElementById('forward');
 var back_button = document.getElementById('back');
-var stop_ids = venueAreas.features.map((feat) => feat.properties.id);
+var stop_ids = venueAreas.features.map(function (feat){feat.properties.id});
 
 var state = {
   current: {
@@ -55,7 +55,7 @@ var state = {
       pitch: destination.properties.pitch || 0,
       bearing: destination.properties.bearing || 0
     });
-    map.on('moveend', ()=> {
+    map.on('moveend', function()  {
       addMarkers(destination.properties.id);
     })
   },
@@ -67,17 +67,17 @@ var state = {
 };
 // var forward = state.forward.bind(state);
 
-map.on('load', () => {
+map.on('load', function () {
   forward_button.addEventListener('click', state.forward.bind(state));
   back_button.addEventListener('click', state.back.bind(state));
 
-  map.on('move', () => removeMarkers());
+  map.on('move', function (){ removeMarkers()});
 
-  map.on('click', (e) => {
+  map.on('click', function (e) {
     console.log(JSON.stringify([e.lngLat.lng, e.lngLat.lat]));
   })
 
-  window.addEventListener('keydown', (e) => {
+  window.addEventListener('keydown', function (e) {
     if (e.code === "ArrowRight") {
       state.forward();
     }
@@ -92,7 +92,7 @@ map.on('load', () => {
 function addMarkers(id) {
   removeMarkers();
   let markerGroup = document.getElementById('markers')
-  _each(markerData[id], mark => {
+  _each(markerData[id], function(mark) {
     let marker = document.createElement('div');
     marker.className = 'marker';
     if (mark.coordinates.length) {
@@ -109,7 +109,7 @@ function addMarkers(id) {
 }
 
 function removeMarkers() {
-  _each(document.getElementsByClassName('marker'), (el) => {
+  _each(document.getElementsByClassName('marker'), function (el)  {
     if (el) { el.remove() }
   });
 }

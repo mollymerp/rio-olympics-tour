@@ -6,7 +6,7 @@
   "scripts": {
     "test": "eslint --no-eslintrc -c .eslintrc index.js",
     "start": "budo index.js --serve=bundle.js --live -d",
-    "build": "browserify index.js | uglifyjs -c -m > bundle.js"
+    "build": "browserify index.js > bundle.js"
   },
   "browserify": {
     "transform": [
