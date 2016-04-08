@@ -37,8 +37,6 @@ module.exports = {
       "bearing": 0,
       "pitch": 40,
       "sites": [
-        "Maria Lenk Aquatics Center",
-        "Rio Olympic Arena",
         "Olympic Aquatics Stadium",
         "OTC - Hall 4",
         "Olympic Tennis Center",
@@ -73,7 +71,7 @@ module.exports = {
       "coordinates": [-43.40380668640137, -22.85114411188802]
     },
     "properties": {
-      "id": "deodoro-2",
+      "id": "x-park",
       "zoom": 16,
       "bearing": 0,
       "pitch": 0,
@@ -228,7 +226,7 @@ module.exports = {
     "properties": {
       "id": "golf",
       "zoom": 14.5,
-      "bearing": 170,
+      "bearing": 0,
       "pitch": 30,
       "sites": [
         "Olympic Golf Course"

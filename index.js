@@ -2,14 +2,19 @@
 
 // global mapboxgl 
 var mapboxgl = require('mapbox-gl');
-var venueAreas = require('./data/areas');
+var _each = require('lodash.foreach');
 
+var venueAreas = require('./data/areas');
+var markerData = require('./data/captions');
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9sbHltZXJwIiwiYSI6ImNpbW1xbXptYTAwNTV2N2tyNXR6cmdpaWQifQ.KPB4laFfAUtauSEKssj3eQ';
+
 var splash = {
   id: 'splash',
   geometry: { coordinates: [-60.774781, -16.394651] },
   properties: { zoom: 3 }
 }
+
+
 var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/satellite-hybrid-v8',
@@ -29,29 +34,31 @@ var state = {
   features: [splash].concat(venueAreas.features),
   forward: function() {
     var i = (this.current.index >= this.stops.length - 1) ? this._setIndex(0) : this._setIndex(this.current.index + 1);
-
     this._fly(this.features[i]);
     if (back_button.classList.contains('disabled')) { back_button.classList.toggle('disabled') }
   },
   back: function() {
-    console.log(this.current.index, this.features[this.current.index])
-    if (this.current.index - 1 > 1) {
-      let i = this._setIndex(this.current.index-1);
+    if (this.current.index > 1) {
+      let i = this._setIndex(this.current.index - 1);
       this._fly(this.features[i]);
-    } else if (this.current.index > 0) {
-      let i = this._setIndex(0);
+    } else if (this.current.index === 1) {
       back_button.classList.toggle('disabled');
+      let i = this._setIndex(0);
       this._fly(this.features[i]);
     }
   },
   _fly: function(destination) {
+    map.off('moveend');
     map.flyTo({
       center: destination.geometry.coordinates,
       zoom: destination.properties.zoom,
       pitch: destination.properties.pitch || 0,
       bearing: destination.properties.bearing || 0
+    });
+    map.on('moveend', ()=> {
+      addMarkers(destination.properties.id);
     })
-  }, 
+  },
   _setIndex: function(newIndex) {
     this.current.index = newIndex;
     this.current.id = this.stops[newIndex];
@@ -64,8 +71,10 @@ map.on('load', () => {
   forward_button.addEventListener('click', state.forward.bind(state));
   back_button.addEventListener('click', state.back.bind(state));
 
+  map.on('move', () => removeMarkers());
+
   map.on('click', (e) => {
-    console.log([e.lngLat.lng, e.lngLat.lat])
+    console.log(JSON.stringify([e.lngLat.lng, e.lngLat.lat]));
   })
 
   window.addEventListener('keydown', (e) => {
@@ -77,3 +86,30 @@ map.on('load', () => {
     }
   })
 });
+
+
+
+function addMarkers(id) {
+  removeMarkers();
+  let markerGroup = document.getElementById('markers')
+  _each(markerData[id], mark => {
+    let marker = document.createElement('div');
+    marker.className = 'marker';
+    if (mark.coordinates.length) {
+      let x = map.project(mark.coordinates)['x'];
+      let y = map.project(mark.coordinates)['y'];
+      marker.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    }
+    let text = document.createElement('h3');
+    text.innerHTML = mark.caption;
+    text.className = 'dark text';
+    marker.appendChild(text);
+    markerGroup.appendChild(marker);
+  })
+}
+
+function removeMarkers() {
+  _each(document.getElementsByClassName('marker'), (el) => {
+    if (el) { el.remove() }
+  });
+}
