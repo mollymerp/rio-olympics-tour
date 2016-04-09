@@ -23,7 +23,7 @@ var map = new mapboxgl.Map({
 });
 var forward_button = document.getElementById('forward');
 var back_button = document.getElementById('back');
-var stop_ids = venueAreas.features.map(function (feat){feat.properties.id});
+var stop_ids = venueAreas.features.map(function(feat) { feat.properties.id });
 
 var state = {
   current: {
@@ -55,7 +55,7 @@ var state = {
       pitch: destination.properties.pitch || 0,
       bearing: destination.properties.bearing || 0
     });
-    map.on('moveend', function()  {
+    map.on('moveend', function() {
       addMarkers(destination.properties.id);
     })
   },
@@ -67,17 +67,17 @@ var state = {
 };
 // var forward = state.forward.bind(state);
 
-map.on('load', function () {
+map.on('load', function() {
   forward_button.addEventListener('click', state.forward.bind(state));
   back_button.addEventListener('click', state.back.bind(state));
 
-  map.on('move', function (){ removeMarkers()});
+  map.on('move', function() { removeMarkers() });
 
-  map.on('click', function (e) {
+  map.on('click', function(e) {
     console.log(JSON.stringify([e.lngLat.lng, e.lngLat.lat]));
   })
 
-  window.addEventListener('keydown', function (e) {
+  window.addEventListener('keydown', function(e) {
     if (e.code === "ArrowRight") {
       state.forward();
     }
@@ -100,16 +100,25 @@ function addMarkers(id) {
       let y = map.project(mark.coordinates)['y'];
       marker.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     }
-    let text = document.createElement('h3');
-    text.innerHTML = mark.caption;
-    text.className = 'dark text';
-    marker.appendChild(text);
+    let img = document.createElement('img');
+    img.src = 'logo_icon_small.png';
+    img.className = 'logo-marker';
+    marker.appendChild(img);
+    let text = "<h3 class='dark text'>"+ mark.caption+"</h3>";
+    marker.addEventListener('click', function(e) {
+      var tooltip = new mapboxgl.Popup()
+        .setLngLat(map.unproject([e.x, e.y]))
+        .setHTML(text)
+        .addTo(map);
+    })
+
+    // marker.appendChild(text);
     markerGroup.appendChild(marker);
   })
 }
 
 function removeMarkers() {
-  _each(document.getElementsByClassName('marker'), function (el)  {
+  _each(document.getElementsByClassName('marker'), function(el) {
     if (el) { el.remove() }
   });
 }
