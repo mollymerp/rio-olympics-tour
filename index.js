@@ -3,7 +3,6 @@
 // global mapboxgl 
 var mapboxgl = require('mapbox-gl');
 var _each = require('lodash.foreach');
-var _debounce = require('lodash.debounce');
 
 var venueAreas = require('./data/areas');
 var markerData = require('./data/captions');
@@ -18,7 +17,7 @@ var splash = {
 
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mollymerp/cimmhyden000cb3klt17e57ss',
+  style: 'mapbox://styles/mapbox/satellite-hybrid-v8',
   center: [-60.774781, -16.394651],
   zoom: 3
 });
@@ -34,16 +33,11 @@ var state = {
   stops: ['splash'].concat(stop_ids),
   features: [splash].concat(venueAreas.features),
   forward: function() {
-    removeMarkers();
     var i = (this.current.index >= this.stops.length - 1) ? this._setIndex(0) : this._setIndex(this.current.index + 1);
     this._fly(this.features[i]);
     if (back_button.classList.contains('disabled')) { back_button.classList.toggle('disabled') }
-    if (i === 1) {
-      document.getElementById('splash').style.display = 'none';
-    }
   },
   back: function() {
-    removeMarkers();
     if (this.current.index > 1) {
       let i = this._setIndex(this.current.index - 1);
       this._fly(this.features[i]);
@@ -63,7 +57,7 @@ var state = {
     });
     map.on('moveend', function() {
       addMarkers(destination.properties.id);
-    });
+    })
   },
   _setIndex: function(newIndex) {
     this.current.index = newIndex;
@@ -77,6 +71,7 @@ map.on('load', function() {
   forward_button.addEventListener('click', state.forward.bind(state));
   back_button.addEventListener('click', state.back.bind(state));
 
+  map.on('move', function() { removeMarkers() });
 
   map.on('click', function(e) {
     console.log(JSON.stringify([e.lngLat.lng, e.lngLat.lat]));
@@ -95,52 +90,35 @@ map.on('load', function() {
 
 
 function addMarkers(id) {
-  // removeMarkers();
-  let markerGroup = document.getElementById('markers');
-  let sidebar = document.getElementById('sidebar');
-
-  let heading = document.createElement('h2');
-  heading.className = "dark heading sidebar";
-  if (markerData[id].length === 1) {
-    heading.innerHTML = markerData[id][0].site;
-  } else {
-    heading.innerHTML = markerData[id][0]["area-name"];
-  }
-  sidebar.appendChild(heading);
-
+  removeMarkers();
+  let markerGroup = document.getElementById('markers')
   _each(markerData[id], function(mark) {
     let marker = document.createElement('div');
     marker.className = 'marker';
     if (mark.coordinates.length) {
-      let x = map.project(mark.coordinates)['x'] + 300;
+      let x = map.project(mark.coordinates)['x'];
       let y = map.project(mark.coordinates)['y'];
       marker.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     }
     let img = document.createElement('img');
-    img.src = 'logo_icon_small.png'
-    img.style.height = '40px';
+    img.src = 'logo_icon_small.png';
+    img.className = 'logo-marker';
     marker.appendChild(img);
-    let text = document.createElement('p');
-    text.innerHTML = mark.caption;
-    text.className = 'dark text sidebar';
-    sidebar.appendChild(text);
+    let text = "<h3 class='dark text'>"+ mark.caption+"</h3>";
+    marker.addEventListener('click', function(e) {
+      var tooltip = new mapboxgl.Popup()
+        .setLngLat(map.unproject([e.x, e.y]))
+        .setHTML(text)
+        .addTo(map);
+    })
 
+    // marker.appendChild(text);
     markerGroup.appendChild(marker);
   })
 }
 
 function removeMarkers() {
-  console.log(document.getElementsByClassName('sidebar'))
   _each(document.getElementsByClassName('marker'), function(el) {
-      // console.log(el);
-    if (el) {
-      el.remove();
-    }
-  });
-  _each(document.getElementsByClassName('sidebar'), function(el) {
-    // console.log(el);
-    if (el) {
-      el.remove();
-    }
+    if (el) { el.remove() }
   });
 }
