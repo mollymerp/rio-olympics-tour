@@ -17,7 +17,7 @@ var splash = {
 
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/satellite-hybrid-v8',
+  style: 'mapbox://styles/mollymerp/cimmhyden000cb3klt17e57ss',
   center: [-60.774781, -16.394651],
   zoom: 3
 });
@@ -104,7 +104,7 @@ function addMarkers(id) {
     img.src = 'logo_icon_small.png';
     img.className = 'logo-marker';
     marker.appendChild(img);
-    let text = "<h3 class='dark text'>"+ mark.caption+"</h3>";
+    let text = "<p class='dark text'>"+ mark.caption+"</p>";
     marker.addEventListener('click', function(e) {
       var tooltip = new mapboxgl.Popup()
         .setLngLat(map.unproject([e.x, e.y]))

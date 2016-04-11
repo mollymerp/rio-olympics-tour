@@ -37,7 +37,7 @@ module.exports = {
       "zoom": 15.5,
       "area-name": "Olympic Park - Barra",
       "bearing": 0,
-      "pitch": 40,
+      "pitch": 0,
       "sites": [
         "Olympic Aquatics Stadium",
         "OTC - Hall 4",
